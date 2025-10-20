@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package email.model.v1;
+option go_package = "github.com/hgyowan/go-email-grpc/gen/email/model/v1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/descriptor.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/any.proto";
+
+message Recipient {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      description: "수신 정보"
+      required: ["toEmails", "langCode", "subject", "templateType", "templateMetadata"]
+    }
+  };
+
+  repeated string toEmails = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "받을 대상 이메일 목록 (TemplateMetaData 가 유저마다 다르지 않다면 여러명 입력 가능)"}];
+  string langCode = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "언어 코드(KO, EN)"}];
+  string subject = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "메일 제목"}];
+  string templateType = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "템플릿 타입 (invite_send, join_confirm, join_message, verify_email)"}];
+  string templateMetadata = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "Meta Data (JSON String)"}];
+}

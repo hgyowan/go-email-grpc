@@ -1,0 +1,81 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "CFM API Swagger",
+    "version": "1.0",
+    "contact": {
+      "name": "gRPC-Gateway project",
+      "url": "https://github.com/hgyowan/church-financial-grpc-gateway"
+    }
+  },
+  "tags": [
+    {
+      "name": "EmailService"
+    }
+  ],
+  "host": "cfm-api-dev.holyflows.com",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {},
+  "definitions": {
+    "v1Recipient": {
+      "type": "object",
+      "properties": {
+        "toEmails": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "받을 대상 이메일 목록 (TemplateMetaData 가 유저마다 다르지 않다면 여러명 입력 가능)"
+        },
+        "langCode": {
+          "type": "string",
+          "description": "언어 코드(KO, EN)"
+        },
+        "subject": {
+          "type": "string",
+          "description": "메일 제목"
+        },
+        "templateType": {
+          "type": "string",
+          "description": "템플릿 타입 (invite_send, join_confirm, join_message, verify_email)"
+        },
+        "templateMetadata": {
+          "type": "string",
+          "description": "Meta Data (JSON String)"
+        }
+      },
+      "description": "수신 정보",
+      "required": [
+        "toEmails",
+        "langCode",
+        "subject",
+        "templateType",
+        "templateMetadata"
+      ]
+    },
+    "v1SendTemplateEmailResponse": {
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "X-User-Token": {
+      "type": "apiKey",
+      "name": "x-user-token",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "X-User-Token": []
+    }
+  ]
+}
