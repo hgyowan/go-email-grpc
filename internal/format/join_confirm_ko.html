@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>이메일 인증</title>
+    <title>Holy 재정 가입 승인 안내</title>
     <style type="text/css">
         /* Responsive Styles */
         @media screen and (max-width: 600px) {
@@ -18,9 +18,6 @@
             .body-text {
                 font-size: 15px !important;
             }
-            .code-text {
-                font-size: 28px !important;
-            }
         }
     </style>
 </head>
@@ -28,7 +25,7 @@
 
 <!-- Preheader Text -->
 <span style="display: none; font-size: 1px; color: #f8fef8; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
-        회원님의 인증 코드는 다음과 같습니다.
+        {{.WorkspaceName}}에 가입이 승인되었습니다.
     </span>
 
 <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -51,7 +48,7 @@
                 <tr>
                     <td align="center" style="padding-top: 10px; padding-bottom: 20px;">
                         <h1 class="header-text" style="font-size: 28px; font-weight: 600; color: #166534; margin: 0;">
-                            CFM 이메일 인증
+                            가입 승인 안내
                         </h1>
                     </td>
                 </tr>
@@ -59,28 +56,26 @@
                 <tr>
                     <td style="padding-bottom: 30px; text-align: center;">
                         <p class="body-text" style="font-size: 18px; color: #374151; line-height: 1.6; margin: 0;">
-                            안녕하세요, 회원님!
+                            <strong style="color: #16a34a;">{{.WorkspaceName}}</strong>에 가입이 승인되었습니다.
                         </p>
                         <p class="body-text" style="font-size: 18px; color: #374151; line-height: 1.6; margin-top: 15px;">
-                            요청하신 이메일 주소를 인증하기 위해 아래 인증 코드를 입력해주세요.
+                            아래 버튼을 클릭하여 로그인하고 이용해보세요.
                         </p>
                     </td>
                 </tr>
-                <!-- Verification Code -->
+                <!-- Call to Action -->
                 <tr>
                     <td align="center" style="padding-bottom: 30px;">
-                        <div style="background-color: #f0fdf4; border-radius: 8px; padding: 20px 30px; display: inline-block;">
-                            <p class="code-text" style="font-size: 36px; font-weight: 700; color: #16a34a; letter-spacing: 4px; margin: 0;">
-                                {{.VerifyCode}}
-                            </p>
-                        </div>
+                        <a href="{{.WorkspaceLink}}" target="_blank" style="background-color: #16a34a; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none; padding: 14px 28px; border-radius: 8px; display: inline-block;">
+                            로그인 하러가기
+                        </a>
                     </td>
                 </tr>
                 <!-- Footer -->
                 <tr>
                     <td align="center" style="padding-top: 20px; border-top: 1px solid rgba(22, 163, 74, 0.2);">
                         <p style="font-size: 12px; color: #6b7280; line-height: 1.5; margin: 0;">
-                            본인이 요청하지 않으셨다면 이 메일을 무시하셔도 됩니다.
+                            본인과 무관한 요청이라면 이 메일을 무시하셔도 됩니다.
                         </p>
                         <p style="font-size: 12px; color: #6b7280; line-height: 1.5; margin-top: 15px;">
                             <a href="#" target="_blank" style="color: #6b7280; text-decoration: underline;">개인정보 처리방침</a>
@@ -88,7 +83,7 @@
                             <a href="#" target="_blank" style="color: #6b7280; text-decoration: underline;">이용약관</a>
                         </p>
                         <p style="font-size: 12px; color: #6b7280; line-height: 1.5; margin-top: 10px;">
-                            &copy; 2025 CFM. All rights reserved.
+                            &copy; 2025 HolyFlows. All rights reserved.
                         </p>
                     </td>
                 </tr>

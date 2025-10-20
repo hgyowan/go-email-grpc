@@ -2,19 +2,20 @@ package main
 
 import (
 	"context"
-	"github.com/hgyowan/go-email-grpc/app/controller/grpc"
-	"github.com/hgyowan/go-email-grpc/app/external"
-	"github.com/hgyowan/go-email-grpc/app/repository"
-	"github.com/hgyowan/go-email-grpc/app/service"
-	"github.com/hgyowan/go-email-grpc/cmd/queue"
-	pkgCrypto "github.com/hgyowan/go-pkg-library/crypto"
-	"github.com/hgyowan/go-pkg-library/envs"
-	pkgLogger "github.com/hgyowan/go-pkg-library/logger"
-	"golang.org/x/sync/errgroup"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/hgyowan/go-email-grpc/app/controller/grpc"
+	"github.com/hgyowan/go-email-grpc/app/controller/queue"
+	"github.com/hgyowan/go-email-grpc/app/external"
+	"github.com/hgyowan/go-email-grpc/app/repository"
+	"github.com/hgyowan/go-email-grpc/app/service"
+	pkgCrypto "github.com/hgyowan/go-pkg-library/crypto"
+	"github.com/hgyowan/go-pkg-library/envs"
+	pkgLogger "github.com/hgyowan/go-pkg-library/logger"
+	"golang.org/x/sync/errgroup"
 )
 
 func main() {

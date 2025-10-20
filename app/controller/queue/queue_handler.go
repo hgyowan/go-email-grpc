@@ -2,6 +2,7 @@ package queue
 
 import (
 	"context"
+
 	"github.com/hgyowan/go-email-grpc/domain"
 )
 

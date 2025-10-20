@@ -3,6 +3,7 @@ package queue
 import (
 	"context"
 	"encoding/json"
+
 	"github.com/hgyowan/go-email-grpc/domain/email"
 	"github.com/hgyowan/go-email-grpc/pkg/constant"
 	pkgError "github.com/hgyowan/go-pkg-library/error"

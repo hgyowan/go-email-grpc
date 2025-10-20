@@ -4,6 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
+	"text/template"
+	"time"
+
 	"github.com/hgyowan/go-email-grpc/domain/email"
 	"github.com/hgyowan/go-email-grpc/pkg/constant"
 	pkgError "github.com/hgyowan/go-pkg-library/error"
@@ -11,9 +15,6 @@ import (
 	pkgEmailV2 "github.com/hgyowan/go-pkg-library/mail/v2"
 	pkgQueue "github.com/hgyowan/go-pkg-library/queue"
 	"github.com/samber/lo"
-	"strings"
-	"text/template"
-	"time"
 )
 
 func registerEmailService(ctx context.Context, s *service) {
@@ -53,13 +54,13 @@ func (e *emailService) SendTemplateEmail(ctx context.Context, param email.EmailS
 			return nil, false
 		}
 
-		if strings.ToUpper(item.LangCode) != "KO" {
+		if strings.ToUpper(string(item.LangCode)) != "KO" {
 			item.LangCode = "EN"
 		}
 
 		return &pkgEmailV2.Recipient{
 			ID:               item.ID,
-			LangCode:         item.LangCode,
+			LangCode:         string(item.LangCode),
 			TemplateType:     item.TemplateType,
 			ToEmails:         item.ToEmails,
 			Subject:          tmpl.GetSubject(item.LangCode, item.Subject),

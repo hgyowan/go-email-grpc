@@ -2,6 +2,8 @@ package email
 
 import (
 	"encoding/json"
+
+	"github.com/hgyowan/go-email-grpc/pkg/constant"
 	pkgError "github.com/hgyowan/go-pkg-library/error"
 	pkgEmailV2 "github.com/hgyowan/go-pkg-library/mail/v2"
 )
@@ -9,7 +11,7 @@ import (
 type TemplateMetaData interface {
 	Unmarshal(b []byte) error
 	Type() pkgEmailV2.EmailTemplateType
-	GetSubject(langCode, subject string) string
+	GetSubject(langCode constant.LangCode, subject string) string
 }
 
 func NewEmailTemplateMetaData(templateType pkgEmailV2.EmailTemplateType) (TemplateMetaData, error) {
@@ -43,7 +45,7 @@ func (v *VerifyEmail) Type() pkgEmailV2.EmailTemplateType {
 	return pkgEmailV2.EmailTemplateTypeVerifyEmail
 }
 
-func (v *VerifyEmail) GetSubject(langCode, subject string) string {
+func (v *VerifyEmail) GetSubject(langCode constant.LangCode, subject string) string {
 	if subject != "" {
 		return subject
 	}
@@ -70,7 +72,7 @@ func (j *JoinMessage) Type() pkgEmailV2.EmailTemplateType {
 	return pkgEmailV2.EmailTemplateTypeJoinMessage
 }
 
-func (j *JoinMessage) GetSubject(langCode, subject string) string {
+func (j *JoinMessage) GetSubject(langCode constant.LangCode, subject string) string {
 	if subject != "" {
 		return subject
 	}
@@ -95,7 +97,7 @@ func (i *InviteSend) Type() pkgEmailV2.EmailTemplateType {
 	return pkgEmailV2.EmailTemplateTypeInviteSend
 }
 
-func (i *InviteSend) GetSubject(langCode, subject string) string {
+func (i *InviteSend) GetSubject(langCode constant.LangCode, subject string) string {
 	if subject != "" {
 		return subject
 	}
@@ -120,7 +122,7 @@ func (j *JoinConfirm) Type() pkgEmailV2.EmailTemplateType {
 	return pkgEmailV2.EmailTemplateTypeJoinConfirm
 }
 
-func (j *JoinConfirm) GetSubject(langCode, subject string) string {
+func (j *JoinConfirm) GetSubject(langCode constant.LangCode, subject string) string {
 	if subject != "" {
 		return subject
 	}

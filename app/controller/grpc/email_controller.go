@@ -2,10 +2,12 @@ package grpc
 
 import (
 	"context"
+
 	"github.com/google/uuid"
 	"github.com/hgyowan/go-email-grpc/domain/email"
 	emailV1 "github.com/hgyowan/go-email-grpc/gen/email/v1"
 	"github.com/hgyowan/go-email-grpc/internal"
+	"github.com/hgyowan/go-email-grpc/pkg/constant"
 	pkgError "github.com/hgyowan/go-pkg-library/error"
 	pkgEmailV2 "github.com/hgyowan/go-pkg-library/mail/v2"
 )
@@ -32,7 +34,7 @@ func (e *emailGRPCHandler) SendTemplateEmail(ctx context.Context, request *email
 		}
 
 		list = append(list, &email.RecipientRequest{
-			LangCode:         item.GetLangCode(),
+			LangCode:         constant.LangCode(item.GetLangCode()),
 			TemplateType:     pkgEmailV2.EmailTemplateType(item.GetTemplateType()),
 			ToEmails:         item.GetToEmails(),
 			Subject:          item.GetSubject(),
