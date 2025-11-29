@@ -15,6 +15,7 @@ import (
 	pkgCrypto "github.com/hgyowan/go-pkg-library/crypto"
 	"github.com/hgyowan/go-pkg-library/envs"
 	pkgLogger "github.com/hgyowan/go-pkg-library/logger"
+	pkgTrace "github.com/hgyowan/go-pkg-library/trace"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -29,6 +30,15 @@ func main() {
 	bCtx, cancelFunc := context.WithCancel(context.Background())
 	group, gCtx := errgroup.WithContext(bCtx)
 	doneChan := make(chan struct{}, 1)
+
+	if envs.ServiceType != envs.PrdType {
+		shutdown := pkgTrace.InitTracer(gCtx, &pkgTrace.OpenTelemetryConfig{
+			ServiceName: envs.ServerName,
+			Endpoint:    envs.OpenTelemetryEndpoint,
+		})
+		defer shutdown()
+	}
+
 	grpcServer := external.MustNewGRPCServer()
 	dbClient := external.MustNewExternalDB()
 	repo := repository.NewRepository(dbClient)
