@@ -2,6 +2,7 @@ package queue
 
 import (
 	"context"
+	"sync"
 
 	"github.com/hgyowan/go-email-grpc/domain"
 )
@@ -21,6 +22,14 @@ func NewQueueHandler(service domain.Service, externalQueueListener domain.Extern
 }
 
 func (q *queueHandler) Listen(ctx context.Context) {
-	go listenEmailQueueHandler(ctx, q)
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
+
+	go func() {
+		defer wg.Done()
+		listenEmailQueueHandler(ctx, q)
+	}()
+
 	<-ctx.Done()
+	wg.Wait()
 }

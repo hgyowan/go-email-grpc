@@ -37,7 +37,7 @@ func listenEmailQueueHandler(ctx context.Context, h *queueHandler) {
 		case err := <-errorCh:
 			pkgLogger.ZapLogger.Logger.Sugar().Error(pkgError.Wrap(err))
 		case <-ctx.Done():
-			pkgLogger.ZapLogger.Logger.Info("Listener shutting down...")
+			pkgLogger.ZapLogger.Logger.Info("Listener shutting down... (context Done)")
 			return
 		}
 	}

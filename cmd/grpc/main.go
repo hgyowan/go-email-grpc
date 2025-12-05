@@ -2,11 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
-	"os"
-	"os/signal"
-	"syscall"
-
 	"github.com/hgyowan/go-email-grpc/app/controller/grpc"
 	"github.com/hgyowan/go-email-grpc/app/controller/queue"
 	"github.com/hgyowan/go-email-grpc/app/external"
@@ -16,7 +11,7 @@ import (
 	"github.com/hgyowan/go-pkg-library/envs"
 	pkgLogger "github.com/hgyowan/go-pkg-library/logger"
 	pkgTrace "github.com/hgyowan/go-pkg-library/trace"
-	"golang.org/x/sync/errgroup"
+	"log"
 )
 
 func main() {
@@ -27,9 +22,9 @@ func main() {
 		log.Fatal("logger is nil")
 	}
 
-	bCtx, cancelFunc := context.WithCancel(context.Background())
-	group, gCtx := errgroup.WithContext(bCtx)
-	doneChan := make(chan struct{}, 1)
+	gCtx, cancelFunc := context.WithCancel(context.Background())
+
+	defer cancelFunc()
 
 	if envs.ServiceType == envs.PrdType {
 		shutdown := pkgTrace.InitTracer(gCtx, &pkgTrace.OpenTelemetryConfig{
@@ -48,37 +43,13 @@ func main() {
 	queueListener := external.MustNewExternalQueueListener()
 	queueEmitter := external.MustNewExternalQueueEmitter()
 	svc := service.NewService(gCtx, repo, redisCli, queueListener, queueEmitter, mailSender, v)
-	q := queue.NewQueueHandler(svc, queueListener)
 	pkgLogger.ZapLogger.Logger.Info("Starting gRPC server on")
 
-	group.Go(func() error {
-		q.Listen(gCtx)
-		pkgLogger.ZapLogger.Logger.Fatal("Queue Listen Handler End")
-		doneChan <- struct{}{}
-		return nil
-	})
+	q := queue.NewQueueHandler(svc, queueListener)
+	go q.Listen(gCtx)
 
-	group.Go(func() error {
-		grpc.NewGRPCHandler(svc, grpcServer).Listen(gCtx)
-		pkgLogger.ZapLogger.Logger.Fatal("GRPC Handler End")
-		doneChan <- struct{}{}
-		return nil
-	})
-
-	interrupt := make(chan os.Signal, 1)
-	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
-	defer close(interrupt)
-
-	select {
-	case <-doneChan:
-		cancelFunc()
-	case <-interrupt:
-		cancelFunc()
-	}
-
-	if err := group.Wait(); err != nil {
-		pkgLogger.ZapLogger.Logger.Fatal(err.Error())
-	}
+	grpcHandler := grpc.NewGRPCHandler(svc, grpcServer)
+	grpcHandler.Listen(gCtx)
 
 	pkgLogger.ZapLogger.Logger.Info("GRPC Server End")
 }
