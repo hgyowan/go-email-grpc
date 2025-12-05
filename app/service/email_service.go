@@ -88,7 +88,7 @@ func (e *emailService) SendTemplateEmail(ctx context.Context, param email.EmailS
 			})
 		}
 
-		if err := e.service.repo.CreateEmailSendLogBatch(mails); err != nil {
+		if err := e.service.repo.CreateEmailSendLogBatch(ctx, mails); err != nil {
 			pkgLogger.ZapLogger.Logger.Sugar().Error(err)
 		}
 	}

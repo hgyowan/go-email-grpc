@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"github.com/hgyowan/go-email-grpc/domain/email"
 	pkgError "github.com/hgyowan/go-pkg-library/error"
 )
@@ -13,6 +14,6 @@ type emailRepository struct {
 	repository *repository
 }
 
-func (e *emailRepository) CreateEmailSendLogBatch(param []*email.EmailSendLog) error {
+func (e *emailRepository) CreateEmailSendLogBatch(ctx context.Context, param []*email.EmailSendLog) error {
 	return pkgError.Wrap(e.repository.externalGormClient.DB().CreateInBatches(&param, 500).Error)
 }

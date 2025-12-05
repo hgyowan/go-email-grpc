@@ -1,5 +1,7 @@
 package email
 
+import "context"
+
 type EmailRepository interface {
-	CreateEmailSendLogBatch(param []*EmailSendLog) error
+	CreateEmailSendLogBatch(ctx context.Context, param []*EmailSendLog) error
 }
