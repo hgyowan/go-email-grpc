@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"github.com/hgyowan/go-email-grpc/domain"
 	"github.com/hgyowan/go-email-grpc/domain/email"
 )
@@ -23,8 +24,8 @@ func (r *repository) register() {
 	registerEmailRepository(r)
 }
 
-func (r *repository) WithTransaction(fn func(txRepo domain.Repository) error) error {
-	tx := r.externalGormClient.DB().Begin() // 트랜잭션 시작
+func (r *repository) WithTransaction(ctx context.Context, fn func(txRepo domain.Repository) error) error {
+	tx := r.externalGormClient.DB().WithContext(ctx).Begin() // 트랜잭션 시작
 	if tx.Error != nil {
 		return tx.Error
 	}
