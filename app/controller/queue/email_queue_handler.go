@@ -25,11 +25,11 @@ func listenEmailQueueHandler(ctx context.Context, h *queueHandler) {
 						continue
 					}
 
-					if err = h.service.SendTemplateEmail(ctx, param); err != nil {
+					if err := h.service.SendTemplateEmail(ctx, param); err != nil {
 						pkgLogger.ZapLogger.Logger.Sugar().Error(pkgError.Wrap(err))
 					}
 
-					if err = h.externalQueueListener.EmailQueueListener().DeleteMessage(ctx, event.ReceiptHandle); err != nil {
+					if err := h.externalQueueListener.EmailQueueListener().DeleteMessage(ctx, event.ReceiptHandle); err != nil {
 						pkgLogger.ZapLogger.Logger.Sugar().Error(pkgError.Wrap(err))
 					}
 				}

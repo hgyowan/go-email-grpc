@@ -24,6 +24,8 @@ func NewEmailTemplateMetaData(templateType pkgEmailV2.EmailTemplateType) (Templa
 		return &JoinConfirm{}, nil
 	case pkgEmailV2.EmailTemplateTypeInviteSend:
 		return &InviteSend{}, nil
+	case pkgEmailV2.EmailTemplateTypeVerifyPasswordResetEmail:
+		return &VerifyPasswordResetEmail{}, nil
 	}
 
 	return nil, pkgError.WrapWithCode(pkgError.EmptyBusinessError(), pkgError.WrongParam)
@@ -123,6 +125,31 @@ func (j *JoinConfirm) Type() pkgEmailV2.EmailTemplateType {
 }
 
 func (j *JoinConfirm) GetSubject(langCode constant.LangCode, subject string) string {
+	if subject != "" {
+		return subject
+	}
+
+	return ""
+}
+
+type VerifyPasswordResetEmail struct {
+	Email             string `json:"email"`
+	PasswordResetLink string `json:"passwordResetLink"`
+}
+
+func (v *VerifyPasswordResetEmail) Unmarshal(b []byte) error {
+	if err := json.Unmarshal(b, &v); err != nil {
+		return pkgError.Wrap(err)
+	}
+
+	return nil
+}
+
+func (v *VerifyPasswordResetEmail) Type() pkgEmailV2.EmailTemplateType {
+	return pkgEmailV2.EmailTemplateTypeVerifyPasswordResetEmail
+}
+
+func (v *VerifyPasswordResetEmail) GetSubject(langCode constant.LangCode, subject string) string {
 	if subject != "" {
 		return subject
 	}
